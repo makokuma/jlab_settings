@@ -59,10 +59,8 @@ PY
     return 1
   fi
 
-  echo "Opening Chrome..."
-  /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
-    --profile-directory="$CHROME_PROFILE" \
-    "$JLAB_URL" >/dev/null 2>&1 &
+  echo "Opening browser..."
+  open "$JLAB_URL"
 }
 
 jlab-stop() {
