@@ -11,7 +11,7 @@ jlab() {
   echo "Stopping old remote Jupyter..."
   ssh "$HOST" "pkill -f 'jupyter.*--port=${PORT}'" 2>/dev/null || true
 
-  echo "Starting remote Jupyter with conda env makecsv..."
+  echo "Starting remote Jupyter with conda env ..."
   ssh "$HOST" "bash -lc '
     source /home/user/miniconda3/etc/profile.d/conda.sh
     conda activate your_python_env
@@ -66,8 +66,8 @@ PY
 }
 
 jlab-stop() {
-  local PORT=9903
-  local HOST="makoto@192.168.10.19"
+  local PORT=XXXX
+  local HOST="user@server"
 
   echo "Stopping remote Jupyter..."
   ssh "$HOST" "pkill -f 'jupyter.*--port=${PORT}'" 2>/dev/null || true
