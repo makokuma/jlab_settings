@@ -37,21 +37,26 @@ jlab() {
 
   echo "Getting token URL..."
   local JLAB_URL
-  JLAB_URL=$(ssh "$HOST" "python - <<'PY'
+  JLAB_URL=$(ssh "$HOST" "python - <<PY
 import re
 logfile = '$LOG_FILE'
+port = '$PORT'
 url = ''
 with open(logfile, 'r', encoding='utf-8', errors='ignore') as f:
     for line in f:
-        m = re.search(r'(http://127\\.0\\.0\\.1:$PORT/lab\\?token=[^[:space:]]+)', line)
+        m = re.search(r'(http://(?:127\\.0\\.0\\.1|localhost):' + re.escape(port) + r'/lab\\?token=\\S+)', line)
         if m:
             url = m.group(1)
+            break
 print(url)
 PY
 ")
 
   if [ -z "$JLAB_URL" ]; then
-    JLAB_URL="http://127.0.0.1:${PORT}/lab"
+    echo "Could not find token URL in log."
+    echo "Try checking manually:"
+    echo "ssh $HOST \"cat $LOG_FILE\""
+    return 1
   fi
 
   echo "Opening Chrome..."
